@@ -1,0 +1,25 @@
+apiVersion: skaffold/v2beta5
+kind: Config
+build:
+  artifacts:
+  - image: nginx-skaffold
+    context: .
+  local: {}
+
+profiles:
+  - name: monkey
+    build:
+      artifacts:
+        - image: registry.apps.c3smonkey.ch/dev/nginx-skaffold
+          context: .
+      local: {}
+      insecureRegistries:
+        - registry.apps.c3smonkey.ch
+      tagPolicy:
+        sha256: {}
+    deploy:
+      kustomize:
+        paths:
+          - k8s/dev
+    activation:
+      - kubeContext: dev/console-c3smonkey-ch:8443/monkey

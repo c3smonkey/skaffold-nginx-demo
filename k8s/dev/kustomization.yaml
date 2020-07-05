@@ -1,0 +1,20 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: dev
+
+commonLabels:
+  app: nginx-skaffold
+
+commonAnnotations:
+  component: fsl-frontend
+
+images:
+  - name: docker-registry.default.svc:5000/myproject/demo
+    newName: docker-registry.default.svc:5000/dev/nginx-skaffold
+    newTag: latest
+
+resources:
+  - deployment.yaml
+  - service.yaml
+  - route.yaml
